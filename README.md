@@ -1,4 +1,8 @@
 <p align="center">
+  <img src="pantheon-hero.jpg" alt="Three luminous figures stand in a classical temple around a glowing acacia tree — the Pantheon" width="100%"/>
+</p>
+
+<p align="center">
   <h1 align="center">Pantheon</h1>
   <p align="center"><strong>The AI Development Operating System</strong></p>
   <p align="center">Persistent memory, crash recovery, and multi-instance coordination for Claude Code.</p>
