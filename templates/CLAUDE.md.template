@@ -1,0 +1,118 @@
+# CLAUDE.md - YOUR_PROJECT Instance
+
+> **Pantheon-powered multi-agent AI development framework.**
+> **Customize this file for your project.**
+
+---
+
+## About YOUR_PROJECT
+
+**Business:** [Describe your project/business here]
+**Domain:** YOUR_DOMAIN
+
+---
+
+## Session Initialization
+
+**MANDATORY:** Run these steps **in order** at the start of EVERY session.
+
+### Step 0 — Read the handoff, if one exists
+
+```bash
+ls -1t HANDOFF-*.md 2>/dev/null | head -1
+```
+
+If one exists, **read it first.** It tells you what the previous session shipped,
+what crashed, what's staged but uncommitted, and usually contains an explicit
+"First move next session" list.
+
+### Step 1 — Reconcile git state
+
+```bash
+git status
+git log -1
+```
+
+Crashes can leave staged-but-uncommitted code from the previous session.
+Do not start new work until you have reconciled what you see against the handoff.
+
+### Step 2 — Tetrad: harvest ghosts, then start fresh beats
+
+```bash
+# 1. MONETA - End any stale session from a crashed predecessor, then start your own
+moneta/moneta status
+# If status shows an open session that doesn't match the handoff's end-state:
+#   moneta/moneta end <stale-id>
+moneta/moneta start "description of what you are working on"
+
+# 2. ECHO - Detect + archive ghosts, then start your own heartbeat
+echo/echo status
+echo/echo detect --stale 30
+# If detect finds a ghost, archive it before beating
+echo/echo beat --session "SESSION_NAME" --action "starting session" --context "what you are working on"
+```
+
+### Step 3 — Autonomic smoke check
+
+```bash
+# If autonomic monitoring is configured, check the latest result
+[ -f echo/autonomic-status.json ] && cat echo/autonomic-status.json
+[ -f echo/autonomic-smoke.log ]   && tail -5 echo/autonomic-smoke.log
+```
+
+If `ok: false`, investigate before doing anything else.
+
+### Step 4 — Execute the handoff's first-move list (if any)
+
+If Step 0 surfaced a handoff with a "First move next session" list, do those
+things now.
+
+### When you finish
+
+```bash
+echo/echo flatline
+moneta/moneta end
+```
+
+Then write a `HANDOFF-YYYY-MM-DD.md` if this session shipped anything non-trivial.
+
+---
+
+## Deployment
+
+```bash
+# 1. Commit and push locally
+git add <files>
+git commit -m "Description"
+git push origin main
+
+# 2. SSH to server and pull
+ssh user@YOUR_SERVER_IP "cd /path/to/app && git pull origin main"
+
+# 3. Rebuild containers if needed
+ssh user@YOUR_SERVER_IP "cd /path/to/app && docker compose up -d --build backend"
+```
+
+---
+
+## Key Systems
+
+[Document your key systems here]
+
+---
+
+## Critical Files (DO NOT RESET)
+
+| File | Purpose |
+|------|---------|
+| `.env` | Credentials |
+| `docker-compose.yml` | Container orchestration |
+
+---
+
+## Health Check
+
+```bash
+# Add your project-specific health checks here
+curl -s https://YOUR_DOMAIN/health | python3 -m json.tool
+```

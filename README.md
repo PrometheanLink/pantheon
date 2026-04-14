@@ -176,6 +176,37 @@ An append-only JSONL message bus for multi-instance coordination. Each instance 
 4. Claim work before starting (prevents merge conflicts)
 5. Announce deploys
 
+### Key Holders — Compaction-Proof Recovery
+
+When an AI instance hits a context compaction, it loses its working memory mid-task. A **key holder** is a persistent file (one per instance) that survives compaction and tells the instance everything it needs to recover:
+
+```markdown
+# Key Holder — Instance A (Planner)
+
+## Who Am I?
+Name: Instance A | Role: Planner | Machine: local workstation
+
+## Bridge Access
+Read inbox:  ssh user@bridge 'tail -20 inbox/planner.jsonl'
+Write:       echo '<msg>' | ssh user@bridge 'cat >> inbox/builder.jsonl'
+
+## Credentials
+Token: <mint command here> | Expires: <date>
+
+## Current Task (UPDATE EACH SESSION)
+Last updated: 2026-04-14
+Working on: <what you were doing>
+
+## Recovery Steps
+1. Read this file  2. Read bridge inbox  3. Read latest HANDOFF  4. Resume
+```
+
+**Where to store key holders:**
+- Each instance stores its key holder in a predictable location (e.g., `_pantheon-bridge/keyholder-<role>.md`)
+- The key holder is NOT in the conversation context — it's on disk, so it survives compaction
+- Every instance must update "Current Task" before any long-running operation
+- After a compaction: read key holder → read inbox → read handoff → resume
+
 ---
 
 ## The Protocol
@@ -200,10 +231,13 @@ pantheon echo beat --session "name" --action "starting" --context "..."
 cat echo/autonomic-status.json      # API smoke test results
 tail -5 echo/autonomic-smoke.log    # Recent history
 
-# Step 4 — Check bridge inbox (if multi-instance)
+# Step 4 — If you just compacted, read your key holder first
+cat _pantheon-bridge/keyholder-$(whoami).md  # Recover identity + task
+
+# Step 5 — Check bridge inbox (if multi-instance)
 # Read your JSONL inbox for new messages
 
-# Step 5 — Execute the handoff's first-move list
+# Step 6 — Execute the handoff's first-move list
 ```
 
 When you finish:
@@ -405,6 +439,7 @@ pantheon/
 
 ## Roadmap
 
+- [x] Key holder protocol for compaction-proof instance recovery
 - [ ] `pantheon init` CLI that scaffolds a project in one command
 - [ ] Package on PyPI (`pip install pantheon-dev`)
 - [ ] Docs website with getting-started guide

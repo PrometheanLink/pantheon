@@ -1,0 +1,22 @@
+#!/bin/bash
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+
+# Check if venv exists, create if needed
+if [ ! -d "$SCRIPT_DIR/venv" ]; then
+    echo "Creating moneta virtual environment..."
+    python3 -m venv "$SCRIPT_DIR/venv"
+    source "$SCRIPT_DIR/venv/bin/activate"
+    pip install pyyaml openai --quiet
+else
+    source "$SCRIPT_DIR/venv/bin/activate"
+fi
+
+# Detect command for daemon integration
+COMMAND="${1:-}"
+
+# Run the Python CLI
+PYTHONPATH="$SCRIPT_DIR" python -m cli.cli "$@"
+EXIT_CODE=$?
+
+exit $EXIT_CODE

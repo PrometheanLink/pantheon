@@ -1,0 +1,75 @@
+# Key Holder — [INSTANCE NAME] ([ROLE])
+
+> **If you just compacted and don't know who you are: read this, then read your bridge inbox, then read the latest HANDOFF.**
+
+---
+
+## Who Am I?
+
+**Name:** [Instance name]
+**Role:** [Planner / Builder / Verifier]
+**Machine:** [Where this instance runs]
+**Codebase:** [Path to project root]
+**Domain:** [What this instance is responsible for]
+
+---
+
+## Bridge Access
+
+**Read my inbox:**
+```bash
+ssh user@bridge-host 'tail -20 _pantheon-bridge/inbox/[my-role].jsonl'
+```
+
+**Write to someone:**
+```bash
+echo '<json msg>' | ssh user@bridge-host 'cat >> _pantheon-bridge/inbox/[recipient].jsonl'
+```
+
+**Message format:**
+```json
+{"from":"[me]","to":"[recipient]","ts":"<ISO-8601>","topic":"...","kind":"...","body":"..."}
+```
+
+**Inbox files:** [list all inbox files]
+
+---
+
+## Credentials
+
+[Token mint commands, SSH keys, API keys — anything needed to authenticate]
+[Include expiry dates so you know if they're still valid]
+
+---
+
+## Tetrad Systems
+
+```bash
+# Start session
+pantheon moneta start "description"
+
+# Heartbeat
+pantheon echo beat --session "SESSION_NAME" --action "what" --context "details"
+
+# End session
+pantheon echo flatline
+pantheon moneta end
+```
+
+---
+
+## Current Task (UPDATE THIS EACH SESSION)
+
+**Last updated:** [DATE]
+**Session:** [session name]
+**Working on:** [What you were doing — be specific enough to resume]
+
+---
+
+## Recovery Steps After Compaction
+
+1. Read THIS file
+2. Read bridge inbox: `tail -20 ...inbox/[my-role].jsonl`
+3. Read latest handoff: `ls -1t HANDOFF-*.md | head -1`
+4. Run session init (see CLAUDE.md)
+5. Resume whatever "Current Task" says above

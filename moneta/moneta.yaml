@@ -1,0 +1,23 @@
+version: "1.0"
+
+paths:
+  sessions: "sessions"
+  highlights: "highlights"
+  summaries: "summaries"
+
+ai:
+  provider: "openai"
+  model: "gpt-4o-mini"
+  api_key_env: "OPENAI_API_KEY"
+
+weekly:
+  purge_after_summary: true
+  summary_day: "sunday"
+
+cli:
+  colored_output: true
+  auto_detect_branch: true
+
+defaults:
+  ai_collaborator: "Claude"
+  instance: "local"

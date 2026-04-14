@@ -1,0 +1,40 @@
+# HANDOFF-YYYY-MM-DD-[time-of-day].md
+
+## Session Summary
+[1-3 sentences: what was the goal, what was achieved]
+
+## What Shipped
+- [List concrete deliverables that were committed/deployed]
+
+## Deploy Status
+- [ ] Committed to git
+- [ ] Pushed to remote
+- [ ] Deployed to production
+- [ ] Verified in production
+
+## What Broke (if anything)
+- [Any regressions or issues introduced]
+
+## Staged but Uncommitted
+- [Files that are staged but not yet committed — the next session needs to decide what to do with these]
+
+## Open Threads
+- [Work that was started but not finished]
+- [Decisions that need to be made]
+
+## First Move Next Session
+1. [Most important thing to do first]
+2. [Second priority]
+3. [Third priority]
+
+## Moneta Session ID
+`YYYY-MM-DD-session-slug`
+
+## Echo State
+- Last beat: [timestamp]
+- Beat count: [N]
+- Status: flatlined / ghost / alive
+
+---
+
+*Written by [agent name] at [timestamp]*
