@@ -1,0 +1,12 @@
+# Protect raw bridge files from direct access
+# Only PHP files can be accessed directly
+<FilesMatch "\.(jsonl|json|md)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Protect inbox directory
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^inbox/ - [F,L]
+</IfModule>

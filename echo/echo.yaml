@@ -1,0 +1,19 @@
+version: "1.0"
+
+# Echo — The Autonomic Heartbeat
+# Biological analog: Autonomic Nervous System / EEG
+# Purpose: Records vital signs even when consciousness is lost
+
+heartbeat:
+  # Minutes before a pulse is considered stale (ghost threshold)
+  stale_threshold: 30
+
+integration:
+  # Moneta root relative to echo/
+  moneta_root: "../moneta"
+
+ghosts:
+  # Directory for ghost reports
+  path: "ghosts"
+  # Auto-detect ghosts on echo status
+  auto_detect: true
